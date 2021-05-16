@@ -1,3 +1,4 @@
+//defining the theme to be used throughout the project
 export default {
     colors: {
         blue: '#3772FF',

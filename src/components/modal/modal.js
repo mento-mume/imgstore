@@ -1,54 +1,189 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
 import {
-    Modal as CModal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    Button,
-    Input,
-  } from "@chakra-ui/react"
+  Modal as CModal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  Button,
+  Input,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Text,
+} from '@chakra-ui/react';
+import * as yup from 'yup';
+import { Formik } from 'formik';
 
-function Modal({isOpen, onClose, type}) {
+function Modal({ isOpen, onClose }) {
+  const [loginText, setLoginText] = useState(true);
+  const loginSchema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup
+      .string()
+      .min(5, 'Password must be 5 charcters chief!')
+      .required(),
+  });
 
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+  const registerSchema = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().min(5).required(),
+  });
 
-   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({
-        email,
-        password
-    })
-}
-   
-    return (
-        <>
-      
-      
-
+  return (
+    <>
       <CModal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{type === 'login' ? 'Login Below' : "Register Now"}</ModalHeader>
+        <ModalContent pt="5">
+          <ModalHeader textAlign="center">Welcome to Imagr</ModalHeader>
+
           <ModalBody>
-          <form onSubmit={handleSubmit} id='login'>
-          <Input placeholder="Email" mb='5' onChange={(e) => setEmail(e.target.value)} />
-          <Input placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-          </form>
+            <Tabs
+              onChange={() => setLoginText(!loginText)}
+              isFitted
+              variant="enclosed"
+            >
+              <TabList mb="1em">
+                <Tab>Login</Tab>
+                <Tab>Register</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Formik
+                    // These are the props needed to initite your formik form
+                    initialValues={{ email: '', password: '' }}
+                    validationSchema={loginSchema}
+                    onSubmit={(values) => {
+                      console.log(values);
+                    }}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                    }) => (
+                      <form onSubmit={handleSubmit} id="login">
+                        <Input
+                          placeholder="Email"
+                          type="email"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched.email}
+                        />
+
+                        {errors.email && ( // If errors.email exists, display a Text component to show the error.email, else, dont show anything
+                          <Text mt="1" color="red" fontSize="small">
+                            {errors.email}
+                          </Text>
+                        )}
+                        <Input
+                          mt="5"
+                          placeholder="Password"
+                          type="password"
+                          name="password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched.password}
+                        />
+                        {errors.password && (
+                          <Text mt="1" color="red" fontSize="small">
+                            {errors.password}
+                          </Text>
+                        )}
+                      </form>
+                    )}
+                  </Formik>
+                </TabPanel>
+                <TabPanel>
+                  <Formik
+                    initialValues={{ name: '', email: '', password: '' }}
+                    validationSchema={registerSchema}
+                    onSubmit={(values) => {
+                      console.log(values);
+                    }}
+                  >
+                    {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                    }) => (
+                      <form onSubmit={handleSubmit} id="register">
+                        <Input
+                          placeholder="Full Name"
+                          type="name"
+                          name="name"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched.name}
+                        />
+                        {errors.name && (
+                          <Text mt="1" color="red" fontSize="small">
+                            {errors.name}
+                          </Text>
+                        )}
+                        <Input
+                          mt="5"
+                          placeholder="Email"
+                          type="email"
+                          name="email"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched.email}
+                        />
+                        {errors.email && (
+                          <Text mt="1" color="red" fontSize="small">
+                            {errors.email}
+                          </Text>
+                        )}
+                        <Input
+                          mt="5"
+                          placeholder="Password"
+                          type="password"
+                          name="password"
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          touched={touched.password}
+                        />
+                        {errors.password && (
+                          <Text mt="1" color="red" fontSize="small">
+                            {errors.password}
+                          </Text>
+                        )}
+                      </form>
+                    )}
+                  </Formik>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button type='submit' form='login' variant="ghost">{type === 'login' ? "Login" : 'Register'}</Button>
+            <Button
+              type="submit"
+              form={loginText ? 'login' : 'register'}
+              variant="ghost"
+            >
+              {loginText ? 'Login' : 'Register'}
+            </Button>
           </ModalFooter>
         </ModalContent>
       </CModal>
     </>
-    )
+  );
 }
 
-export default Modal
+export default Modal;

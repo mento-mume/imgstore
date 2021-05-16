@@ -12,6 +12,7 @@
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "babel-plugin-styled-components": "^1.12.0",
+    "formik": "^2.2.6",
     "framer-motion": "^4.1.16",
     "next": "10.2.0",
     "next-compose-plugins": "^2.2.1",
@@ -20,7 +21,8 @@
     "react-dom": "17.0.2",
     "react-stickynode": "^3.0.5",
     "react-waypoint": "^10.1.0",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "imagemin-mozjpeg": "^9.0.0",
