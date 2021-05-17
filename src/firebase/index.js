@@ -28,6 +28,12 @@ const getCurrentUser = async () => {
   return user;
 };
 
+const googleLogin = async () => {
+  var provider = new firebase.auth.GoogleAuthProvider();
+  provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  await firebase.auth().signInWithPopup(provider);
+};
+
 const logOutUser = async () => {
   await firebase.auth().signOut();
 };
@@ -37,4 +43,5 @@ export default {
   signInUser,
   logOutUser,
   getCurrentUser,
+  googleLogin
 };

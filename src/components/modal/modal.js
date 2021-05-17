@@ -5,6 +5,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
+  ModalCloseButton,
   ModalBody,
   Button,
   Input,
@@ -48,6 +49,7 @@ function Modal({ isOpen, onClose }) {
       >
         <ModalOverlay />
         <ModalContent pt="5">
+          <ModalCloseButton />
           <ModalHeader textAlign="center">Welcome to Imagr</ModalHeader>
 
           <ModalBody>
@@ -187,22 +189,22 @@ function Modal({ isOpen, onClose }) {
             </Tabs>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter justifyContent="space-between">
             <Button
-              colorScheme="blue"
-              mr={3}
-              onClick={() => {
-                setLoginText(true);
+              colorScheme="red"
+              onClick={async () => {
+                await authApi.googleLogin();
                 onClose();
               }}
             >
-              Close
+              {loginText ? 'Login with Google' : 'Register with Google'}
             </Button>
+
             <Button
               isLoading={loading}
               type="submit"
               form={loginText ? 'login' : 'register'}
-              variant="ghost"
+              colorScheme="green"
             >
               {loginText ? 'Login' : 'Register'}
             </Button>
