@@ -17,9 +17,12 @@ import {
 } from '@chakra-ui/react';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import authApi from '../../firebase';
 
 function Modal({ isOpen, onClose }) {
   const [loginText, setLoginText] = useState(true);
+  const [loading, setLoading] = useState(false);
+
   const loginSchema = yup.object().shape({
     email: yup.string().email().required(),
     password: yup
@@ -36,7 +39,13 @@ function Modal({ isOpen, onClose }) {
 
   return (
     <>
-      <CModal isOpen={isOpen} onClose={onClose}>
+      <CModal
+        isOpen={isOpen}
+        onClose={() => {
+          setLoginText(true);
+          onClose();
+        }}
+      >
         <ModalOverlay />
         <ModalContent pt="5">
           <ModalHeader textAlign="center">Welcome to Imagr</ModalHeader>
@@ -57,8 +66,11 @@ function Modal({ isOpen, onClose }) {
                     // These are the props needed to initite your formik form
                     initialValues={{ email: '', password: '' }}
                     validationSchema={loginSchema}
-                    onSubmit={(values) => {
-                      console.log(values);
+                    onSubmit={async (values) => {
+                      setLoading(true);
+                      await authApi.signInUser(values.email, values.password);
+                      onClose();
+                      setLoading(false);
                     }}
                   >
                     {({
@@ -106,8 +118,15 @@ function Modal({ isOpen, onClose }) {
                   <Formik
                     initialValues={{ name: '', email: '', password: '' }}
                     validationSchema={registerSchema}
-                    onSubmit={(values) => {
-                      console.log(values);
+                    onSubmit={async (values) => {
+                      setLoading(true);
+                      await authApi.registerUser(
+                        values.email,
+                        values.password,
+                        values.name
+                      );
+                      onClose();
+                      setLoading(false);
                     }}
                   >
                     {({
@@ -169,10 +188,18 @@ function Modal({ isOpen, onClose }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                setLoginText(true);
+                onClose();
+              }}
+            >
               Close
             </Button>
             <Button
+              isLoading={loading}
               type="submit"
               form={loginText ? 'login' : 'register'}
               variant="ghost"

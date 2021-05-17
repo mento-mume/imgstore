@@ -40,19 +40,18 @@ const NavLink = styled.div`
   }
 `;
 const ButtonContainer = styled.div`
-  align-item: center;
   height: 100%;
   align-self: center;
 `;
 const NavButton = styled(Button)`
-  border-radius: 20px;
+  border-radius: 15px;
 `;
 
 const Logo = styled.p`
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
   color: #23262f;
-  font-size: 34px;
+  font-size: 27px;
 `;
 
 // const Line = styled.div`
@@ -72,7 +71,7 @@ const navLinks = [
   },
 ];
 
-function Header({ onPressAuth }) {
+function Header({ onPressAuth, isLoggedIn }) {
   return (
     <HeaderContainer>
       <HeaderRow>
@@ -84,8 +83,12 @@ function Header({ onPressAuth }) {
           })}
         </NavContainer>
         <ButtonContainer>
-          <NavButton onClick={onPressAuth} colorScheme="blue" size="sm">
-            Login
+          <NavButton
+            onClick={onPressAuth}
+            colorScheme={isLoggedIn ? 'red' : 'blue'}
+            size="md"
+          >
+            {isLoggedIn ? 'Logout' : 'Login'}
           </NavButton>
         </ButtonContainer>
       </HeaderRow>
