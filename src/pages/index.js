@@ -20,7 +20,11 @@ export default function Home() {
   return (
     <Layout isLoggedIn={isLoggedIn}>
       <Hero isLoggedIn={isLoggedIn} />
-      <Text fontSize="30px" fontWeight="bold" mb="50" mt="10">
+      <Text
+        fontSize={{ base: '26px', md: '30px', lg: '30px' }}
+        fontWeight="bold"
+        mb={{ base: '30', md: '50', lg: '50' }}
+      >
         Discover
       </Text>
       <Flex wrap="wrap" height="100%">

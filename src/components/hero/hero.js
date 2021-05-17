@@ -10,7 +10,7 @@ export default function Hero({ isLoggedIn }) {
         fontWeight="bold"
         textAlign="center"
       >
-        {isLoggedIn ? `Welcome Back ${name}` : 'Welcome to Imagr'}
+        {isLoggedIn ? `Welcome Back` : 'Welcome to Imagr'}
       </Text>
       <Text
         fontSize={{ base: 'sm', md: 'md', lg: 'md' }}
