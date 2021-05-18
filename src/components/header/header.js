@@ -67,7 +67,7 @@ const navLinks = [
   },
   {
     id: 2,
-    name: 'Something',
+    name: 'My Collections',
   },
 ];
 

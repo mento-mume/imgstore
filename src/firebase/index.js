@@ -1,6 +1,11 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
 
+// export to seperate file, same system used to export & import theme
+const collections = {
+  gallery: 'gallery',
+};
+
 // Store db instace from firebase
 const db = firebase.firestore();
 
@@ -38,10 +43,49 @@ const logOutUser = async () => {
   await firebase.auth().signOut();
 };
 
+const uploadImgs = async (file) => {
+  const imgs = [];
+
+  const storageRef = firebase.storage().ref();
+  var i;
+  for (i = 0; i < file.length; i++) {
+    const fileRef = storageRef.child(file[i].name);
+    await fileRef.put(file[i]);
+    const url = await fileRef.getDownloadURL();
+    imgs.push(url);
+  }
+  return imgs;
+};
+
+const uploadGallery = async ({ user_id, title, images, user_name }) => {
+  await db.collection(collections.gallery).add({
+    user_id,
+    title,
+    images,
+    user_name,
+  });
+};
+
+// Check yourself
+const getGalleries = async () => {
+  const data = [];
+  const querySnapshot = await db.collection(collections.gallery).get();
+  querySnapshot.forEach((doc) => {
+    data.push({
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+  return data;
+};
+
 export default {
   registerUser,
   signInUser,
   logOutUser,
   getCurrentUser,
-  googleLogin
+  googleLogin,
+  uploadImgs,
+  uploadGallery,
+  getGalleries,
 };

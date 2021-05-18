@@ -1,36 +1,30 @@
-import React from 'react';
-import { Box, Image, Text, Flex, Center, Spacer } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Text, Flex, Spacer } from '@chakra-ui/react';
+// import Image from 'next/image';
+import styled from 'styled-components';
 
-function ImgCard() {
+const Image = styled.img`
+  border-radius: 15px;
+`;
+
+function ImgCard({ title, images, user }) {
+  const arr = images.splice(1, images.length);
   return (
     <Box width={{ base: '100%', md: '45%', lg: '30%' }} mb="10">
-      <Image src={require('../../assets/product2.png')} borderRadius="15" />
-      <Flex mt="2">
-        <Image
-          src={require('../../assets/product3.png')}
-          borderRadius="15"
-          width="32%"
-        />
-        <Spacer />
-        <Image
-          src={require('../../assets/product4.png')}
-          borderRadius="15"
-          width="32%"
-        />
-        <Spacer />
-        <Image
-          src={require('../../assets/product5.png')}
-          borderRadius="15"
-          width="32%"
-        />
+      <Image src={images[0]} width="100%" height="80%" />
+
+      <Flex mt="2" justifyContent="space-between">
+        {arr.map((i, index) => (
+          <Image src={i} width="30%" key={index} />
+        ))}
       </Flex>
 
       <Text noOfLines={1} fontSize="medium" fontWeight="bold" pt="3">
-        Amazing Digital Collection
+        {title}
       </Text>
 
       <Text noOfLines={1} fontSize="small" fontWeight="medium" pt="1">
-        By Jimmy Falon
+        By {user}
       </Text>
     </Box>
   );
